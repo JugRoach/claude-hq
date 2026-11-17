@@ -1,0 +1,11 @@
+# One Night Press stays out of version control
+One-Night-Press/
+
+# Anything marked protected, at any depth
+**/PROTECTED*
+
+# Throwaway worker tests
+HQ/worker-test/
+
+# Local-only inventories (list C:\SIG folder names; never push)
+HQ/inventory-*.md
