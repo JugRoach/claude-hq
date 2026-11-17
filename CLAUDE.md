@@ -40,6 +40,11 @@ Outside the 7 channels:
 
 ## Screen jobs (computer use)
 
+**Every job that takes over Matt's screen goes through the queue in `HQ/queue/`** (rules in `README.md`, the log in `screen-queue.md`).
+- Run one at a time, oldest first, and never while another job shows running.
+- No session or project takes the screen on its own; it hands the job to the queue.
+- Claude Duet is HQ and every command comes from there (Matt, 11/16).
+
 - **Ask first for any screen job of about 10–15 minutes or less.** Send Matt one line through Claude Duet, like "quick one if you've got a second to pull over", even while he's in a game. Don't wait for him to log off.
   - If he says "not now" (for example mid-dungeon), wait and ask again later.
   - Longer screen jobs wait until he's free.

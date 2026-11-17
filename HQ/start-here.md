@@ -15,6 +15,10 @@ _Rewritten 2026-11-16 ~22:50 by HQ, after the restructure (steps 1–6)._
   - `tools/check-summary.ps1`: the quality gate for cloud summaries.
   - `tools/hq-window.ps1`: show or hide HQ windows.
 
+- **The screen-control queue lives in `queue/`** (set up 11/16 at 22:3x).
+  - Read `queue/README.md` first and keep `queue/screen-queue.md` current.
+  - Job 1 is the desktop-app project pass (queued). Job 2, the WoW UI rebuild, is expected.
+
 ## Waiting on Matt
 
 - Nothing blocking. Department items are in each department's `start-here.md`.
