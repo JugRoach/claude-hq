@@ -4,6 +4,12 @@ Queued 2026-11-16 22:xx at Matt's request ("later, by computer use, and schedule
 
 Not done that night: there's no tool for desktop projects, and Matt was in WoW, so the screen was off-limits.
 
+## Who can run this
+
+- **It needs a session with computer-use tools,** meaning the Claude desktop app with Settings → This computer → Computer use turned on.
+- **HQ can't run it.** HQ is a Claude Code command-line session with no computer-use tools; checked 2026-11-16 22:5x, when Matt parked WoW for it.
+- **Hand it to a desktop-app chat that has computer use,** for example Claude Duet if its app has it on. Give it this file's steps.
+
 ## Before touching the screen (deconfliction)
 
 Do every check. If any one fails, don't start: wait an hour and check again (one-shot CronCreate, or note it in `HQ/start-here.md`).

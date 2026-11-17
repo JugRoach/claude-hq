@@ -10,6 +10,10 @@ HQ/worker-test/
 # Retired Google Drive notes, kept on this PC only (some mention SIG and private work)
 HQ/archive/
 
+# Whole-PC and Drive organization inventory (names SIG folders and personal files): local only
+HQ/work/life-organization-plan*.md
+HQ/work/life-org-data/
+
 # Worker git worktrees (HQ copies results out)
 .claude/worktrees/
 

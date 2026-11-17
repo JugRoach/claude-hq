@@ -38,6 +38,15 @@ Outside the 7 channels:
   - deleting anything
   - anything that can't be undone
 
+## Screen jobs (computer use)
+
+- **Ask first for any screen job of about 10–15 minutes or less.** Send Matt one line through Claude Duet, like "quick one if you've got a second to pull over", even while he's in a game. Don't wait for him to log off.
+  - If he says "not now" (for example mid-dungeon), wait and ask again later.
+  - Longer screen jobs wait until he's free.
+- **Never close, click in or type into a game window** (WoW and others), even when it's in the background.
+- **Give the screen back as soon as the job is done.**
+- **Check first that SIG isn't using the screen.**
+
 ## Purchases
 
 Every purchase gets two checks before it goes to Matt:
