@@ -30,7 +30,7 @@ The HQ Opus session is a Claude Code CLI session. On Windows it has **no compute
   - Claude Duet, through this PC's device "jugroach-dt"
   - or one desktop-app chat with Computer use on
 - **HQ hands over** with "SCREEN JOB READY: <job>" plus the job's steps, and logs the result when the executor reports back.
-- **If HQ ever gets its own computer-use tools** (for example by running as a desktop-app Code session; see `HQ\work\computer-use-setup.md`), HQ runs the jobs itself under the same rules.
+- **If HQ ever gets its own computer-use tools** (for example by running as a desktop-app Code session; see `HQ\work\computer-use-setup.md`), HQ runs the jobs itself under the same rules. (Checked 11/16: the move to the desktop app failed and HQ is still the hidden CLI with no such tools, so Duet does the clicking. See `HQ\log\2026-11-16-computer-use-test.md`.)
 
 ## Job file
 

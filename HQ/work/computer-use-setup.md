@@ -51,6 +51,7 @@ To have HQ itself hold the tools instead of going through Duet, HQ would run as 
 - **Test,** when Matt has 5 minutes and isn't in a game: in a normal terminal, `cd "C:\Claude's Workspace"` and then `claude --desktop --continue`. This should open this HQ conversation in the desktop app's Code tab, where computer use is documented to work.
 - **Trade-offs:** HQ would live in the desktop app's window instead of being fully hidden, and the hidden-CLI autostart would be retired.
 - **Not documented** is whether Remote Control from Duet behaves the same there. That's why it's a test, not tonight's default.
+- **First try, 11/16 22:42, failed:** a hidden script can't run `claude --desktop` ("can't run non-interactively … or redirected output"). The fallback restarted the hidden CLI HQ, which has no computer-use tools; see `HQ\log\2026-11-16-computer-use-test.md`. Next time Matt starts it himself from a visible terminal, or opens a Code session on this folder in the desktop app, after stopping the hidden HQ.
 
 ## First screen job in the queue
 
