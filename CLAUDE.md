@@ -11,19 +11,20 @@ Every Claude session under this folder loads this file. Only HQ edits it.
 
 Each Duet channel has one department folder here. Claude Duet routes a job to HQ; HQ hands it to the matching department.
 
-| Duet channel | Folder |
-|---|---|
-| Daily Life | `Daily-Life/` |
-| PC & Tools | `PC-and-Tools/` |
-| Money & Home | `Money-and-Home/` (local only, never pushed) |
-| Career | `Career/` |
-| Taste Dossier | `Taste-Dossier/` (local only, never pushed) |
-| My Business | `My-Business/` |
-| Games | `Games/` |
+| Duet channel | Slug | Folder |
+|---|---|---|
+| Finances | `finances` | `Finances/` (local only, never pushed) |
+| Taste Dossier | `taste-dossier` | `Taste-Dossier/` (local only, never pushed) |
+| Businesses | `businesses` | `Businesses/` |
+| Career & Transition | `career-transition` | `Career-and-Transition/` |
+| Daily Life | `daily-life` | `Daily-Life/` |
+| Games & Hobbies | `games-hobbies` | `Games-and-Hobbies/` |
+| PC & Tools | `pc-tools` | `PC-and-Tools/` |
 
 Outside the 7 channels:
 - `HQ/` routes jobs and keeps the company rules.
-- `One-Night-Press/` is private and local only. SIG lives in `C:\SIG` and is not part of this folder.
+- `One-Night-Press/` is private and local only. Its business side alone is handled by Businesses, per the existing SIG rules.
+- SIG lives in `C:\SIG` and is not part of this folder.
 
 **This PC is the home for all files.** Google Drive is no longer a workspace: there are no new TO/FROM HQ notes in Drive, and cloud copies are summaries at most.
 
@@ -40,7 +41,7 @@ Outside the 7 channels:
 ## Purchases
 
 Every purchase gets two checks before it goes to Matt:
-1. Can he afford it? Ask Money & Home.
+1. Can he afford it? Ask Finances.
 2. Would he like it? Check the Taste Dossier.
 
 ## Taste and routing
@@ -52,7 +53,8 @@ Every purchase gets two checks before it goes to Matt:
 
 - Notes and boards cover the business side only, never the content itself.
 - Protected tastes are never named anywhere outside the Taste Dossier.
-- Taste Dossier and Money & Home content is protected: it stays on this PC and is never committed or pushed.
+- Taste Dossier and Finances content is protected: it stays on this PC and is never committed or pushed.
+- **A cloud copy of either is a summary at most.** It must pass `HQ/tools/check-summary.ps1` against the full local file: fresh, covering every section, pointing into the full file, with no keep-out terms. Decisions are made from the full local file, never from a summary.
 
 ## Memory lives in files, not chats
 

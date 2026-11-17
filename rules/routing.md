@@ -42,6 +42,8 @@ Score each of these 0, 1 or 2:
 ## 5. How to launch
 
 1. **Write the brief to a file** in the department's `work\<job>\` folder.
+   - The department is the one for the job's Duet channel; the channel-to-folder table is in the root `CLAUDE.md`.
+   - Finances and Taste Dossier work stays in their local-only folders.
 2. **Commit and push first.** A worker's git worktree starts from `origin/master`, not local master, so anything unpushed (the brief, new facts) is missing inside it.
 3. **Launch:**
    ```powershell

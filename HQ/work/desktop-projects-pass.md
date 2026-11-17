@@ -19,18 +19,28 @@ Do every check. If any one fails, don't start: wait an hour and check again (one
 
 ## The job (in the Claude desktop app)
 
-**The 7 Duet channels** (confirmed by Matt 2026-11-16) are: **Daily Life, PC & Tools, Money & Home, Career, Taste Dossier, My Business, Games.** One Night Press and SIG stay as their own private projects, untouched.
+**The 7 Duet channels** (corrected by Matt 2026-11-16) are: **Finances, Taste Dossier, Businesses, Career & Transition, Daily Life, Games & Hobbies, PC & Tools.**
+- Slugs: finances, taste-dossier, businesses, career-transition, daily-life, games-hobbies, pc-tools.
+- One Night Press and SIG stay as their own private projects, untouched.
 
 1. **List every desktop project** as it appears. Names seen in Drive notes: Daily Ops, Taste Dossier, Personal Taste Profile, Side Quest, Coppice, WoW Forever, SIG — Main, BG3 Builds, Spotify Stuff, Claude-efficiency.
 2. **Rename** each existing project that clearly matches a channel. Likely matches, to confirm on screen:
-   - WoW Forever → **Games**
-   - Coppice → **My Business**
+   - WoW Forever → **Games & Hobbies**
+   - Coppice (or the My Business project) → **Businesses**
+   - Money & Home or Side Quest, whichever holds the Budget → **Finances**
+   - Career → **Career & Transition**
    - Taste Dossier → **Taste Dossier** (keep)
    - Daily Ops → see the next step
 3. **Create the missing channels:** at least **Daily Life** and **PC & Tools**, and any of the 7 that don't exist after the renames.
 4. **Archive** (don't delete) **BG3 Builds**, **Spotify Stuff** and **Claude-efficiency**.
 5. **Pause the "BG3 Builds daily Drive check" routine** (claude.ai routines). The routines API only lists 20 routines, all SIG reminders, so it couldn't be reached that night. Pause it; don't delete it.
-6. **Ask Matt in one batched Duet message** about any project not covered above (for example Daily Ops, Side Quest, Personal Taste Profile): which channel it becomes, or whether to archive it. Don't guess.
+6. **Bring the masters home** (restructure step 4, finishing it):
+   - Export the Taste Dossier **master** (`claude/taste_dossier.md` in the Taste Dossier project; the Drive copy was only v1 of 11/12) into `Taste-Dossier/full/`.
+   - Export the **Budget** (not in Drive; probably in the Finances / Money & Home project) into `Finances/full/`.
+   - Regenerate `Taste-Dossier/summary.md` from the master, and write a Budget summary with its own keep-out list.
+   - Both summaries must pass `HQ/tools/check-summary.ps1`.
+   - Then leave only the summaries in those projects' knowledge, after Matt's OK on the swap.
+7. **Ask Matt in one batched Duet message** about any project not covered above (for example Daily Ops, Side Quest, Personal Taste Profile): which channel it becomes, or whether to archive it. Don't guess.
 
 ## When done
 
