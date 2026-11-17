@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Day Board, Layout A: Three Columns (mockup)</title>
+<style>
+/* Quiet Villain. Bases are all L <= 35, C <= 12 (CIELCh). One accent. No gradients, shadows, glows or blur. */
+:root{
+  --strip:#0E0D0E;   /* tab strip */
+  --page:#141213;    /* page */
+  --panel:#1B191A;   /* panels and tiles */
+  --raised:#242122;  /* buttons, Matt's messages */
+  --line:#302C2D;    /* hairlines */
+  --edge:#4B4544;    /* stronger edges */
+  --cream:#E8E2D6;   /* primary text */
+  --second:#A8A297;  /* secondary text, control edges */
+  --muted:#8A847A;   /* past items, small meta */
+  --accent:#B08D57;  /* now, and waiting on Matt. Nothing else. */
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1920px;height:1080px;overflow:hidden}
+body{background:var(--page);color:var(--cream);font:400 17px/1.4 "Segoe UI",system-ui,sans-serif}
+.serif{font-family:Cambria,Georgia,serif;font-weight:400}
+.label{font:600 14px/1 "Segoe UI",sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--second)}
+.num{font-variant-numeric:tabular-nums}
+
+/* tab strip */
+.tabs{height:56px;background:var(--strip);border-bottom:1px solid var(--edge);display:flex;align-items:flex-end;padding:0 24px;gap:6px}
+.tab{height:44px;min-width:196px;padding:0 26px;display:flex;align-items:center;justify-content:center;gap:12px;
+  font:600 15px/1 "Segoe UI",sans-serif;letter-spacing:.16em;color:var(--second);
+  background:var(--panel);border:1px solid var(--line);border-bottom:0;border-radius:2px 2px 0 0}
+.tab small{font:400 14px/1 "Segoe UI",sans-serif;letter-spacing:0;color:var(--muted)}
+.tab.on{height:51px;margin-bottom:-1px;background:var(--page);color:var(--cream);border-color:var(--edge);border-top:3px solid var(--cream)}
+.strip-note{margin-left:auto;align-self:center;font-size:14px;color:var(--muted)}
+
+/* shared parts */
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:2px;min-height:0}
+.ph{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:13px 18px 11px;border-bottom:1px solid var(--line)}
+.ph h2{font-size:21px;line-height:1.2;color:var(--cream)}
+.ph .meta{font-size:15px;color:var(--second)}
+.btn{display:inline-flex;align-items:center;justify-content:center;height:36px;padding:0 16px;
+  font:600 15px/1 "Segoe UI",sans-serif;color:var(--cream);background:var(--raised);
+  border:1.5px solid var(--second);border-radius:2px;white-space:nowrap}
+kbd{display:inline-block;font:600 14px/1 "Segoe UI",sans-serif;color:var(--cream);background:var(--raised);
+  border:1px solid var(--second);border-bottom-width:2px;border-radius:2px;padding:4px 8px 3px}
+
+/* day header */
+.dayhead{display:flex;align-items:flex-end;justify-content:space-between;height:66px;padding:0 2px 6px}
+.dayhead .date{font-size:36px;line-height:1;margin-top:9px}
+.clock{font-size:26px;line-height:1;color:var(--cream)}
+.clock span{font-size:15px;color:var(--second);margin-left:2px}
+
+/* calendar */
+.ev{display:grid;grid-template-columns:92px 1fr auto;gap:12px;align-items:baseline;padding:8px 18px;border-top:1px solid var(--line)}
+.ev:first-of-type{border-top:0}
+.ev .t{font-size:16px;color:var(--second)}
+.ev .n{font-size:18px}
+.ev .x{font-size:15px;color:var(--second)}
+.ev.past .t,.ev.past .n{color:var(--muted)}
+.ev.next .n{font-weight:600}
+.ev.next .x{color:var(--accent);font-weight:600}
+.now{display:flex;align-items:center;gap:12px;height:24px;padding:0 18px 0 18px;border-top:1px solid var(--line);
+  font:600 14px/1 "Segoe UI",sans-serif;letter-spacing:.14em;color:var(--accent)}
+.now::after{content:"";flex:1;height:2px;background:var(--accent)}
+.now + .ev{border-top:0}
+.dayrow{display:grid;grid-template-columns:92px 1fr;gap:12px;padding:8px 18px;border-top:1px solid var(--line)}
+.dayrow:first-of-type{border-top:0}
+.dayrow .d{font-size:16px;font-weight:600}
+.dayrow .d span{display:block;font-weight:400;font-size:14px;color:var(--second)}
+.dayrow .i{font-size:17px;line-height:1.45}
+.dayrow .i b{font-weight:400;color:var(--second);display:inline-block;width:92px;font-size:15px}
+
+/* to-do */
+.todo li{list-style:none;display:flex;align-items:center;gap:12px;padding:7px 18px;border-top:1px solid var(--line);font-size:17px}
+.todo li:first-child{border-top:0}
+.cb{width:20px;height:20px;border:1.5px solid var(--second);border-radius:2px;background:var(--page);flex:none;position:relative}
+.done .cb::after{content:"";position:absolute;left:5px;top:1px;width:6px;height:11px;border:solid var(--cream);border-width:0 2px 2px 0;transform:rotate(45deg)}
+.done span{color:var(--muted);text-decoration:line-through}
+
+/* chat */
+.chat{display:flex;flex-direction:column}
+.msgs{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:flex-end;gap:20px;padding:22px 24px}
+.m .who{display:flex;gap:10px;align-items:baseline;margin-bottom:6px}
+.m .who time{font-size:14px;color:var(--muted)}
+.m .tx{font-size:18px;line-height:1.5}
+.m.cl{max-width:88%;padding-left:16px;border-left:2px solid var(--edge)}
+.m.me{align-self:flex-end;max-width:76%;background:var(--raised);border:1px solid var(--edge);border-radius:2px;padding:11px 16px 13px}
+.composer{display:flex;gap:12px;align-items:stretch;padding:16px 24px 12px;border-top:1px solid var(--line)}
+.box{flex:1;height:64px;display:flex;align-items:center;padding:0 16px;background:var(--page);border:1.5px solid var(--second);border-radius:2px;font-size:18px;color:var(--second)}
+.box::before{content:"";width:2px;height:24px;background:var(--cream);margin-right:8px}
+.send{height:64px;width:132px;font-size:18px;border:2px solid var(--cream)}
+.hint{display:flex;align-items:center;gap:10px;padding:0 24px 16px;font-size:15px;color:var(--second)}
+
+/* businesses */
+.state{display:inline-flex;align-items:center;gap:9px;font:600 14px/1 "Segoe UI",sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--cream);white-space:nowrap}
+.state i{width:11px;height:11px;background:var(--cream);flex:none}
+.state.earning i{position:relative;margin-right:15px}
+.state.earning i::after{content:"";position:absolute;left:15px;top:0;width:11px;height:11px;background:var(--cream)}
+.state.notyet{color:var(--second)}
+.state.notyet i{background:none;border:1.5px solid var(--second)}
+.state.waiting{color:var(--accent)}
+.state.waiting i{background:var(--accent)}
+.tile{padding:14px 18px 16px}
+.th{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.th h3{font-size:22px;line-height:1.2}
+.tl{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:8px;font-size:16px;color:var(--second)}
+.sec{margin-top:17px}
+.sec .label{padding-bottom:7px;border-bottom:1px solid var(--line)}
+.row{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:34px;font-size:16px;border-bottom:1px solid var(--line)}
+.row:last-child{border-bottom:0}
+.row .v{color:var(--second);text-align:right}
+.sec.wait .label{color:var(--accent)}
+.sec.wait .row{min-height:50px}
+.sec.wait .row span::before{content:"";display:inline-block;width:8px;height:8px;background:var(--accent);margin-right:10px;transform:translateY(-1px)}
+.steps{display:inline-flex;gap:4px;margin-right:10px;vertical-align:middle}
+.steps i{width:14px;height:10px;border:1px solid var(--second)}
+.steps i.f{background:var(--cream);border-color:var(--cream)}
+
+/* Layout A: three columns */
+main{height:1024px;padding:18px 24px 24px;display:grid;grid-template-columns:560px 1fr 520px;gap:24px}
+.col{display:flex;flex-direction:column;gap:14px;min-height:0}
+.grow{flex:1}
+.bizhead{display:flex;align-items:flex-end;justify-content:space-between;height:66px;padding:0 2px 8px}
+.bizhead h2{font-size:26px;line-height:1}
+.bizhead .meta{font-size:15px;color:var(--second)}
+.bizhead .meta b{font-weight:600;color:var(--accent)}
+</style>
+</head>
+<body>
+
+<nav class="tabs" aria-label="Windows">
+  <div class="tab on">DAY BOARD</div>
+  <div class="tab">DISCORD <small>Ctrl+Alt+D</small></div>
+  <div class="strip-note">Mockup, Layout A. Sample data only.</div>
+</nav>
+
+<main>
+
+  <!-- Column 1: calendar -->
+  <section class="col" aria-label="Calendar">
+    <header class="dayhead">
+      <div><div class="label">Monday</div><div class="date serif">November 16</div></div>
+      <div class="clock num">10:42<span>AM</span></div>
+    </header>
+
+    <div class="panel grow">
+      <div class="ph"><h2 class="serif">Today</h2><span class="meta">7 events</span></div>
+      <div class="ev past"><span class="t num">8:00 AM</span><span class="n">Morning brief</span></div>
+      <div class="ev past"><span class="t num">9:30 AM</span><span class="n">Car service drop-off</span></div>
+      <div class="now">NOW 10:42</div>
+      <div class="ev next"><span class="t num">11:00 AM</span><span class="n">Accountant call</span><span class="x">Next, in 18 min</span></div>
+      <div class="ev"><span class="t num">1:00 PM</span><span class="n">Lunch with a friend</span></div>
+      <div class="ev"><span class="t num">4:00 PM</span><span class="n">Grocery pickup</span><span class="x">moved from 3:00</span></div>
+      <div class="ev"><span class="t num">6:30 PM</span><span class="n">Gym</span></div>
+      <div class="ev"><span class="t num">8:00 PM</span><span class="n">Game night</span></div>
+    </div>
+
+    <div class="panel">
+      <div class="ph"><h2 class="serif">Coming up</h2><span class="meta">Next 4 days</span></div>
+      <div class="dayrow"><div class="d">Tue 17</div><div class="i"><div><b class="num">10:00 AM</b>Dentist</div><div><b class="num">2:00 PM</b>Bank appointment</div></div></div>
+      <div class="dayrow"><div class="d">Wed 18</div><div class="i"><div><b>All day</b>Trash and recycling</div><div><b class="num">7:00 PM</b>Dinner out</div></div></div>
+      <div class="dayrow"><div class="d">Thu 19</div><div class="i"><div><b class="num">9:00 AM</b>Haircut</div></div></div>
+      <div class="dayrow"><div class="d">Fri 20</div><div class="i"><div><b>Due</b>Sales tax registration</div><div><b class="num">6:00 PM</b>Movie night</div></div></div>
+    </div>
+
+    <div class="panel todo">
+      <div class="ph"><h2 class="serif">To-do today</h2><span class="meta">1 of 3 done</span></div>
+      <ul>
+        <li class="done"><i class="cb"></i><span>Pay electric bill</span></li>
+        <li><i class="cb"></i><span>Reply to landlord</span></li>
+        <li><i class="cb"></i><span>Back up the PC</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Column 2: Claude Duet chat -->
+  <section class="panel chat" aria-label="Claude Duet chat">
+    <div class="ph"><h2 class="serif">Claude Duet</h2><span class="meta">Chat</span></div>
+    <div class="msgs">
+      <div class="m me"><div class="who"><span class="label">Matt</span><time>10:31 AM</time></div><div class="tx">What's left on my day?</div></div>
+      <div class="m cl"><div class="who"><span class="label">Claude</span><time>10:31 AM</time></div><div class="tx">Five things: accountant call at 11:00, lunch at 1:00, grocery pickup at 3:00, gym at 6:30, and game night at 8:00.</div></div>
+      <div class="m me"><div class="who"><span class="label">Matt</span><time>10:36 AM</time></div><div class="tx">Move the grocery pickup to 4.</div></div>
+      <div class="m cl"><div class="who"><span class="label">Claude</span><time>10:36 AM</time></div><div class="tx">Done. Grocery pickup is now 4:00 PM. Nothing else moved.</div></div>
+      <div class="m me"><div class="who"><span class="label">Matt</span><time>10:40 AM</time></div><div class="tx">Anything waiting on me for the businesses?</div></div>
+      <div class="m cl"><div class="who"><span class="label">Claude</span><time>10:40 AM</time></div><div class="tx">Two items, both for One Night Press: approve the price list, and upload ID for the payout account. Everything else is on track.</div></div>
+    </div>
+    <div class="composer">
+      <div class="box">Message Claude Duet</div>
+      <div class="btn send">Send</div>
+    </div>
+    <div class="hint"><kbd>F12</kbd><span>talks into this box, from any tab.</span></div>
+  </section>
+
+  <!-- Column 3: businesses -->
+  <section class="col" aria-label="Businesses">
+    <header class="bizhead">
+      <h2 class="serif">Businesses</h2>
+      <span class="meta">4 businesses, <b>1 waiting on Matt</b></span>
+    </header>
+
+    <div class="panel tile">
+      <div class="th"><h3 class="serif">One Night Press</h3><span class="state waiting"><i></i>Waiting on Matt</span></div>
+      <div class="sec">
+        <div class="label">Deadlines</div>
+        <div class="row"><span>Sales tax registration</span><span class="v">Fri Nov 20</span></div>
+        <div class="row"><span>Storefront listing review</span><span class="v">Fri Nov 27</span></div>
+      </div>
+      <div class="sec">
+        <div class="label">Accounts</div>
+        <div class="row"><span>Payout account</span><span class="v">pending verification</span></div>
+        <div class="row"><span>Storefront account</span><span class="v">active</span></div>
+        <div class="row"><span>Business email</span><span class="v">active</span></div>
+      </div>
+      <div class="sec">
+        <div class="label">Launch tasks</div>
+        <div class="row"><span>Launch checklist</span><span class="v"><span class="steps"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i></i><i></i><i></i><i></i><i></i></span>4 / 9</span></div>
+        <div class="row"><span>Next task</span><span class="v">Set up tax settings</span></div>
+      </div>
+      <div class="sec wait">
+        <div class="label">Waiting on Matt</div>
+        <div class="row"><span>Approve price list</span><div class="btn">Review</div></div>
+        <div class="row"><span>Upload ID for payout account</span><div class="btn">Open</div></div>
+      </div>
+    </div>
+
+    <div class="panel tile">
+      <div class="th"><h3 class="serif">Brass Key Supply</h3><span class="state earning"><i></i>Earning</span></div>
+      <div class="tl"><span>$412 paid out this week. Next payout Friday.</span><div class="btn">Details</div></div>
+    </div>
+
+    <div class="panel tile">
+      <div class="th"><h3 class="serif">Ledger Lane</h3><span class="state running"><i></i>Running</span></div>
+      <div class="tl"><span>Open and taking orders. No sales yet this week.</span><div class="btn">Details</div></div>
+    </div>
+
+    <div class="panel tile">
+      <div class="th"><h3 class="serif">Slow Tide Goods</h3><span class="state notyet"><i></i>Not launched</span></div>
+      <div class="tl"><span>Launch checklist 2 / 7. No date set.</span><div class="btn">Details</div></div>
+    </div>
+  </section>
+
+</main>
+</body>
+</html>

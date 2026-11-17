@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Day Board, Layout B: Week Band and Chat Dock (mockup)</title>
+<style>
+/* Quiet Villain. Bases are all L <= 35, C <= 12 (CIELCh). One accent. No gradients, shadows, glows or blur. */
+:root{
+  --strip:#0E0D0E;   /* tab strip */
+  --page:#141213;    /* page */
+  --panel:#1B191A;   /* panels and tiles */
+  --raised:#242122;  /* buttons, Matt's messages */
+  --line:#302C2D;    /* hairlines */
+  --edge:#4B4544;    /* stronger edges */
+  --cream:#E8E2D6;   /* primary text */
+  --second:#A8A297;  /* secondary text, control edges */
+  --muted:#8A847A;   /* past items, small meta */
+  --accent:#B08D57;  /* now, and waiting on Matt. Nothing else. */
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1920px;height:1080px;overflow:hidden}
+body{background:var(--page);color:var(--cream);font:400 17px/1.4 "Segoe UI",system-ui,sans-serif}
+.serif{font-family:Cambria,Georgia,serif;font-weight:400}
+.label{font:600 14px/1 "Segoe UI",sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--second)}
+.num{font-variant-numeric:tabular-nums}
+
+/* tab strip */
+.tabs{height:56px;background:var(--strip);border-bottom:1px solid var(--edge);display:flex;align-items:flex-end;padding:0 24px;gap:6px}
+.tab{height:44px;min-width:196px;padding:0 26px;display:flex;align-items:center;justify-content:center;gap:12px;
+  font:600 15px/1 "Segoe UI",sans-serif;letter-spacing:.16em;color:var(--second);
+  background:var(--panel);border:1px solid var(--line);border-bottom:0;border-radius:2px 2px 0 0}
+.tab small{font:400 14px/1 "Segoe UI",sans-serif;letter-spacing:0;color:var(--muted)}
+.tab.on{height:51px;margin-bottom:-1px;background:var(--page);color:var(--cream);border-color:var(--edge);border-top:3px solid var(--cream)}
+.strip-note{margin-left:auto;align-self:center;font-size:14px;color:var(--muted)}
+
+/* shared parts */
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:2px;min-height:0}
+.ph{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:13px 18px 11px;border-bottom:1px solid var(--line)}
+.ph h2{font-size:21px;line-height:1.2;color:var(--cream)}
+.ph .meta{font-size:15px;color:var(--second)}
+.btn{display:inline-flex;align-items:center;justify-content:center;height:36px;padding:0 16px;
+  font:600 15px/1 "Segoe UI",sans-serif;color:var(--cream);background:var(--raised);
+  border:1.5px solid var(--second);border-radius:2px;white-space:nowrap}
+kbd{display:inline-block;font:600 14px/1 "Segoe UI",sans-serif;color:var(--cream);background:var(--raised);
+  border:1px solid var(--second);border-bottom-width:2px;border-radius:2px;padding:4px 8px 3px}
+
+/* day header */
+.dayhead{display:flex;align-items:baseline;gap:18px;height:46px;padding:0 2px}
+.dayhead .date{font-size:36px;line-height:1}
+.clock{margin-left:auto;font-size:26px;line-height:1;color:var(--cream)}
+.clock span{font-size:15px;color:var(--second);margin-left:2px}
+
+/* calendar: week band */
+.week{display:grid;grid-template-columns:1.75fr 1fr 1fr 1fr 1fr}
+.wcol{border-left:1px solid var(--line);min-width:0}
+.wcol:first-child{border-left:0}
+.wh{display:flex;align-items:baseline;justify-content:space-between;gap:10px;height:48px;padding:13px 16px 0;border-bottom:1px solid var(--line)}
+.wh h2{font-size:21px;line-height:1.2}
+.wh .meta{font-size:15px;color:var(--second)}
+.ev{display:grid;grid-template-columns:88px 1fr auto;gap:10px;align-items:baseline;padding:7px 16px;border-top:1px solid var(--line)}
+.wh + .ev{border-top:0}
+.ev .t{font-size:16px;color:var(--second)}
+.ev .n{font-size:18px}
+.ev .x{font-size:15px;color:var(--second)}
+.ev.past .t,.ev.past .n{color:var(--muted)}
+.ev.next .n{font-weight:600}
+.ev.next .x{color:var(--accent);font-weight:600}
+.now{display:flex;align-items:center;gap:12px;height:24px;padding:0 16px;border-top:1px solid var(--line);
+  font:600 14px/1 "Segoe UI",sans-serif;letter-spacing:.14em;color:var(--accent)}
+.now::after{content:"";flex:1;height:2px;background:var(--accent)}
+.now + .ev{border-top:0}
+.wi{padding:9px 16px 10px;border-top:1px solid var(--line)}
+.wh + .wi{border-top:0}
+.wi .t{display:block;font-size:15px;color:var(--second)}
+.wi .n{display:block;font-size:17px;line-height:1.3}
+
+/* to-do strip */
+.todo{display:flex;align-items:center;gap:30px;height:52px;padding:0 18px}
+.todo h2{font-size:21px;line-height:1.2;margin-right:6px}
+.todo .it{display:flex;align-items:center;gap:11px;font-size:17px}
+.todo .meta{margin-left:auto;font-size:15px;color:var(--second)}
+.cb{width:20px;height:20px;border:1.5px solid var(--second);border-radius:2px;background:var(--page);flex:none;position:relative}
+.done .cb::after{content:"";position:absolute;left:5px;top:1px;width:6px;height:11px;border:solid var(--cream);border-width:0 2px 2px 0;transform:rotate(45deg)}
+.done span{color:var(--muted);text-decoration:line-through}
+
+/* chat */
+.msgs{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:flex-end;gap:20px;padding:22px 24px}
+.m .who{display:flex;gap:10px;align-items:baseline;margin-bottom:6px}
+.m .who time{font-size:14px;color:var(--muted)}
+.m .tx{font-size:18px;line-height:1.5}
+.m.cl{max-width:92%;padding-left:16px;border-left:2px solid var(--edge)}
+.m.me{align-self:flex-end;max-width:80%;background:var(--raised);border:1px solid var(--edge);border-radius:2px;padding:11px 16px 13px}
+.composer{display:flex;gap:12px;align-items:stretch;padding:16px 24px 12px;border-top:1px solid var(--line)}
+.box{flex:1;height:64px;display:flex;align-items:center;padding:0 16px;background:var(--page);border:1.5px solid var(--second);border-radius:2px;font-size:18px;color:var(--second)}
+.box::before{content:"";width:2px;height:24px;background:var(--cream);margin-right:8px}
+.send{height:64px;width:132px;font-size:18px;border:2px solid var(--cream)}
+.hint{display:flex;align-items:center;gap:10px;padding:0 24px 20px;font-size:15px;color:var(--second)}
+
+/* businesses */
+.state{display:inline-flex;align-items:center;gap:9px;font:600 14px/1 "Segoe UI",sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--cream);white-space:nowrap}
+.state i{width:11px;height:11px;background:var(--cream);flex:none}
+.state.earning i{position:relative;margin-right:15px}
+.state.earning i::after{content:"";position:absolute;left:15px;top:0;width:11px;height:11px;background:var(--cream)}
+.state.notyet{color:var(--second)}
+.state.notyet i{background:none;border:1.5px solid var(--second)}
+.state.waiting{color:var(--accent)}
+.state.waiting i{background:var(--accent)}
+.tile{padding:14px 18px 16px}
+.th{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.th h3{font-size:22px;line-height:1.2}
+.tl{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:8px;font-size:16px;color:var(--second)}
+.sec .label{padding-bottom:7px;border-bottom:1px solid var(--line)}
+.row{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:34px;font-size:16px;border-bottom:1px solid var(--line)}
+.row:last-child{border-bottom:0}
+.row .v{color:var(--second);text-align:right}
+.sec.wait .label{color:var(--accent)}
+.sec.wait .row{min-height:50px}
+.sec.wait .row span::before{content:"";display:inline-block;width:8px;height:8px;background:var(--accent);margin-right:10px;transform:translateY(-1px)}
+.steps{display:inline-flex;gap:4px;margin-right:10px;vertical-align:middle}
+.steps i{width:14px;height:10px;border:1px solid var(--second)}
+.steps i.f{background:var(--cream);border-color:var(--cream)}
+
+/* Layout B: board on the left, chat docked on the right */
+.wrap{height:1024px;display:grid;grid-template-columns:1fr 620px}
+.board{padding:20px 24px 24px;display:flex;flex-direction:column;gap:14px;min-width:0;min-height:0}
+.dock{background:var(--panel);border-left:1px solid var(--edge);display:flex;flex-direction:column;min-height:0}
+.dock .ph{padding:19px 24px 15px}
+.dock .ph h2{font-size:24px}
+.bizhead{display:flex;align-items:baseline;justify-content:space-between;height:34px;padding:6px 2px 0}
+.bizhead h2{font-size:26px;line-height:1}
+.bizhead .meta{font-size:15px;color:var(--second)}
+.bizhead .meta b{font-weight:600;color:var(--accent)}
+.bizrow{flex:1;min-height:0;display:grid;grid-template-columns:1.4fr 1fr;gap:14px}
+.stack{display:flex;flex-direction:column;gap:14px;min-height:0}
+.stack .tile{flex:1;display:flex;flex-direction:column;justify-content:center}
+.onp{display:flex;flex-direction:column}
+.quad{flex:1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto auto;column-gap:28px;row-gap:20px;align-content:space-evenly;margin-top:10px}
+</style>
+</head>
+<body>
+
+<nav class="tabs" aria-label="Windows">
+  <div class="tab on">DAY BOARD</div>
+  <div class="tab">DISCORD <small>Ctrl+Alt+D</small></div>
+  <div class="strip-note">Mockup, Layout B. Sample data only.</div>
+</nav>
+
+<div class="wrap">
+
+  <main class="board">
+    <header class="dayhead">
+      <div class="date serif">November 16</div>
+      <div class="label">Monday</div>
+      <div class="clock num">10:42<span>AM</span></div>
+    </header>
+
+    <!-- Calendar: today plus the next four days, side by side -->
+    <section class="panel week" aria-label="Calendar">
+      <div class="wcol">
+        <div class="wh"><h2 class="serif">Today</h2><span class="meta">7 events</span></div>
+        <div class="ev past"><span class="t num">8:00 AM</span><span class="n">Morning brief</span></div>
+        <div class="ev past"><span class="t num">9:30 AM</span><span class="n">Car service drop-off</span></div>
+        <div class="now">NOW 10:42</div>
+        <div class="ev next"><span class="t num">11:00 AM</span><span class="n">Accountant call</span><span class="x">Next, in 18 min</span></div>
+        <div class="ev"><span class="t num">1:00 PM</span><span class="n">Lunch with a friend</span></div>
+        <div class="ev"><span class="t num">4:00 PM</span><span class="n">Grocery pickup</span><span class="x">was 3:00</span></div>
+        <div class="ev"><span class="t num">6:30 PM</span><span class="n">Gym</span></div>
+        <div class="ev"><span class="t num">8:00 PM</span><span class="n">Game night</span></div>
+      </div>
+      <div class="wcol">
+        <div class="wh"><h2 class="serif">Tue 17</h2></div>
+        <div class="wi"><span class="t num">10:00 AM</span><span class="n">Dentist</span></div>
+        <div class="wi"><span class="t num">2:00 PM</span><span class="n">Bank appointment</span></div>
+      </div>
+      <div class="wcol">
+        <div class="wh"><h2 class="serif">Wed 18</h2></div>
+        <div class="wi"><span class="t">All day</span><span class="n">Trash and recycling</span></div>
+        <div class="wi"><span class="t num">7:00 PM</span><span class="n">Dinner out</span></div>
+      </div>
+      <div class="wcol">
+        <div class="wh"><h2 class="serif">Thu 19</h2></div>
+        <div class="wi"><span class="t num">9:00 AM</span><span class="n">Haircut</span></div>
+      </div>
+      <div class="wcol">
+        <div class="wh"><h2 class="serif">Fri 20</h2></div>
+        <div class="wi"><span class="t">Due</span><span class="n">Sales tax registration</span></div>
+        <div class="wi"><span class="t num">6:00 PM</span><span class="n">Movie night</span></div>
+      </div>
+    </section>
+
+    <!-- To-do: one thin strip -->
+    <section class="panel todo" aria-label="To-do today">
+      <h2 class="serif">To-do today</h2>
+      <div class="it done"><i class="cb"></i><span>Pay electric bill</span></div>
+      <div class="it"><i class="cb"></i><span>Reply to landlord</span></div>
+      <div class="it"><i class="cb"></i><span>Back up the PC</span></div>
+      <span class="meta">1 of 3 done</span>
+    </section>
+
+    <!-- Businesses -->
+    <header class="bizhead">
+      <h2 class="serif">Businesses</h2>
+      <span class="meta">4 businesses, <b>1 waiting on Matt</b></span>
+    </header>
+
+    <section class="bizrow" aria-label="Businesses">
+      <div class="panel tile onp">
+        <div class="th"><h3 class="serif">One Night Press</h3><span class="state waiting"><i></i>Waiting on Matt</span></div>
+        <div class="quad">
+          <div class="sec">
+            <div class="label">Deadlines</div>
+            <div class="row"><span>Sales tax registration</span><span class="v">Fri Nov 20</span></div>
+            <div class="row"><span>Storefront listing review</span><span class="v">Fri Nov 27</span></div>
+          </div>
+          <div class="sec">
+            <div class="label">Accounts</div>
+            <div class="row"><span>Payout account</span><span class="v">pending verification</span></div>
+            <div class="row"><span>Storefront account</span><span class="v">active</span></div>
+            <div class="row"><span>Business email</span><span class="v">active</span></div>
+          </div>
+          <div class="sec">
+            <div class="label">Launch tasks</div>
+            <div class="row"><span>Launch checklist</span><span class="v"><span class="steps"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i></i><i></i><i></i><i></i><i></i></span>4 / 9</span></div>
+            <div class="row"><span>Next task</span><span class="v">Set up tax settings</span></div>
+          </div>
+          <div class="sec wait">
+            <div class="label">Waiting on Matt</div>
+            <div class="row"><span>Approve price list</span><div class="btn">Review</div></div>
+            <div class="row"><span>Upload ID for payout account</span><div class="btn">Open</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stack">
+        <div class="panel tile">
+          <div class="th"><h3 class="serif">Brass Key Supply</h3><span class="state earning"><i></i>Earning</span></div>
+          <div class="tl"><span>$412 paid out this week. Next payout Friday.</span><div class="btn">Details</div></div>
+        </div>
+        <div class="panel tile">
+          <div class="th"><h3 class="serif">Ledger Lane</h3><span class="state running"><i></i>Running</span></div>
+          <div class="tl"><span>Open and taking orders. No sales yet this week.</span><div class="btn">Details</div></div>
+        </div>
+        <div class="panel tile">
+          <div class="th"><h3 class="serif">Slow Tide Goods</h3><span class="state notyet"><i></i>Not launched</span></div>
+          <div class="tl"><span>Launch checklist 2 / 7. No date set.</span><div class="btn">Details</div></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Claude Duet chat, docked full height -->
+  <aside class="dock" aria-label="Claude Duet chat">
+    <div class="ph"><h2 class="serif">Claude Duet</h2><span class="meta">Chat</span></div>
+    <div class="msgs">
+      <div class="m me"><div class="who"><span class="label">Matt</span><time>10:31 AM</time></div><div class="tx">What's left on my day?</div></div>
+      <div class="m cl"><div class="who"><span class="label">Claude</span><time>10:31 AM</time></div><div class="tx">Five things: accountant call at 11:00, lunch at 1:00, grocery pickup at 3:00, gym at 6:30, and game night at 8:00.</div></div>
+      <div class="m me"><div class="who"><span class="label">Matt</span><time>10:36 AM</time></div><div class="tx">Move the grocery pickup to 4.</div></div>
+      <div class="m cl"><div class="who"><span class="label">Claude</span><time>10:36 AM</time></div><div class="tx">Done. Grocery pickup is now 4:00 PM. Nothing else moved.</div></div>
+      <div class="m me"><div class="who"><span class="label">Matt</span><time>10:40 AM</time></div><div class="tx">Anything waiting on me for the businesses?</div></div>
+      <div class="m cl"><div class="who"><span class="label">Claude</span><time>10:40 AM</time></div><div class="tx">Two items, both for One Night Press: approve the price list, and upload ID for the payout account. Everything else is on track.</div></div>
+    </div>
+    <div class="composer">
+      <div class="box">Message Claude Duet</div>
+      <div class="btn send">Send</div>
+    </div>
+    <div class="hint"><kbd>F12</kbd><span>talks into this box, from any tab.</span></div>
+  </aside>
+
+</div>
+</body>
+</html>
