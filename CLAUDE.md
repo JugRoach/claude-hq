@@ -46,6 +46,7 @@ Outside the 7 channels:
 - **Never close, click in or type into a game window** (WoW and others), even when it's in the background.
 - **Give the screen back as soon as the job is done.**
 - **Check first that SIG isn't using the screen.**
+- **Who does the clicking:** HQ (a command-line session) has no computer-use tools on Windows. HQ writes the job to `HQ/work/screen-jobs/` and hands it to Claude Duet with "SCREEN JOB READY". Duet runs it on this PC (device "jugroach-dt"). Setup details: `HQ/work/computer-use-setup.md`.
 
 ## Purchases
 
