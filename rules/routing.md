@@ -41,12 +41,26 @@ Score each of these 0, 1 or 2:
 
 ## 5. How to launch
 
-```powershell
-cd "<department folder>"
-$env:CLAUDE_CODE_EFFORT_LEVEL = "<low|medium|high|xhigh|max>"
-claude --bg --model <haiku|sonnet|opus|fable> "<brief>"
-```
-
-- Watch it with `claude agents --json`. Plain `claude agents` refuses to run when its output is piped.
-- Read its output with `claude logs <id>`.
-- Remove it with `claude rm <id>` once it's done.
+1. **Write the brief to a file** in the department's `work\<job>\` folder.
+2. **Commit and push first.** A worker's git worktree starts from `origin/master`, not local master, so anything unpushed (the brief, new facts) is missing inside it.
+3. **Launch:**
+   ```powershell
+   cd "<department folder>"
+   $env:CLAUDE_CODE_EFFORT_LEVEL = "<low|medium|high|xhigh|max>"
+   claude --bg --model <haiku|sonnet|opus|fable> "Read work\<job>\brief.md and carry it out. Enter a git worktree at the default location first (no custom path)."
+   ```
+   - Background workers in this repo can only write inside a git worktree.
+   - A worktree at the default location (`.claude\worktrees\` at the repo root, which git ignores) needs no permission tap.
+   - A custom path triggers a permission prompt that nobody can answer.
+   - Never tell a worker to get around the write guard with shell writes or a settings change.
+4. **Watch it** with `claude agents --json`:
+   - Plain `claude agents` refuses to run when its output is piped.
+   - In PowerShell 5.1, pipe through `Out-String` before `ConvertFrom-Json`, then unwrap the array with `ForEach-Object { $_ }`.
+   - Check `state` (`working`, `blocked`, `done`) and `waitingFor`.
+   - Read the screen with `claude logs <id>`.
+5. **When it's done, HQ:**
+   - checks the work
+   - copies the files out of the worktree into the main folder, checking hashes
+   - commits
+   - runs `claude rm <id>`, which also removes the worktree once it has no changes left
+6. **If it gets stuck on a prompt,** `claude stop <id>`, fix the brief and relaunch. There's no way to answer the prompt from outside the session.
