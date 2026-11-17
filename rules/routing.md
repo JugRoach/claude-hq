@@ -82,3 +82,12 @@ Bumps:
    - commits
    - runs `claude rm <id>`, which also removes the worktree once it has no changes left
 6. **If it gets stuck on a prompt,** `claude stop <id>`, fix the brief and relaunch. There's no way to answer the prompt from outside the session.
+
+## 7. Dispatcher and jobs moved from Duet (folded in from the 11/17 model-split edit)
+
+- Run via `powershell -File HQ\tools\dispatch-job.ps1 -Model <id> -Effort <level> -Cwd <folder> -Name <slug> -Prompt "<job>"`. One log per job in `HQ\jobs\`, with the model that actually answered. SIG jobs use `-Cwd C:\SIG` and log inside `C:\SIG\jobs`.
+- Model ids: Fable `claude-fable-5-2`, Opus `claude-opus-5-5`, Sonnet `claude-sonnet-5-5`, Haiku `claude-haiku-5-5`.
+- Effort rises one level for money, deletes, drivers or BIOS, security, or public output.
+- Duet departments have a fixed model, so inside Duet they act as managers: plan, then send the work to subagents on the models above.
+- Move from Duet to PC API jobs: weekly PC & Tools research, weekly health check, Verifier passes, file reorg analysis, Day Board and wallpaper builds (Fable for visual calls), mic tuning analysis. Photo date fix and iCloud uploads are parked until after 11/22.
+- API priority: SIG first, then the businesses, then everything else. The `gpu` lock and the game rule still apply.
