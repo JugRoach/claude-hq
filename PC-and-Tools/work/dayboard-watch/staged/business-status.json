@@ -1,0 +1,37 @@
+{
+  "updated": "2026-11-16T23:30:00-05:00",
+  "approval": {
+    "waiting": false,
+    "what": "",
+    "updated": "2026-11-14T12:45:00-05:00"
+  },
+  "businesses": [
+    {
+      "name": "Coppice",
+      "state": "Not launched",
+      "line": "Waiting on top.gg review.",
+      "watch": {
+        "who": "Claude",
+        "check": "checks Gmail at 1:23 PM and 7:23 PM",
+        "eta": "2026-11-28",
+        "eta_source": "top.gg estimate",
+        "flag_after": "2026-12-05",
+        "source": "Submitted 11/14; top.gg quoted 1-2 weeks (Drive note 'DONE top.gg submit'). Check times and the 12/05 flag date: Matt, 11/16."
+      },
+      "updated": "2026-11-16T23:30:00-05:00"
+    },
+    {
+      "name": "Game Art Kit",
+      "state": "Not launched",
+      "line": "Next product; queued after Coppice free launch.",
+      "watch": {
+        "who": "Claude",
+        "check": "starts it right after Coppice's free launch, watching for that on the same Gmail checks",
+        "eta_text": "No date yet: it follows Coppice",
+        "source": "Queued behind Coppice (11/14 tiles note); owner: Businesses department, set 11/16."
+      },
+      "updated": "2026-11-16T23:30:00-05:00"
+    }
+  ],
+  "help": "Day Board business tracker, read only from this PC file (the Drive mirror was retired 11/16). One entry per business. state is one of: Running, Needs you, Earning, Not launched. Every waiting entry gets a 'watch' so nothing looks like it's waiting with no one on it: {who, check (e.g. 'checks Gmail at 1:23 PM and 7:23 PM'), eta (YYYY-MM-DD) + eta_source, or eta_text, flag_after (YYYY-MM-DD), source (not shown)}. HQ builds 'watch' from the routines and memory when it updates a card. Optional business-side fields: deadlines, accounts, launch_tasks, needs (shape in PC-and-Tools/work/dayboard-layoutB/STAGING.md). Set approval.waiting to true (with a short 'what') when an Allow card or approval is waiting on Matt. Bump 'updated' (ISO time) on every change."
+}

@@ -1,0 +1,1 @@
+﻿2026-11-16 22:26 - LIVE: Day Board waiting cards now show who tracks them, when it's checked, the estimate and the flag date (page v31 + business-status.json 'watch'; Coppice: Claude checks Gmail 1:23 PM / 7:23 PM, top.gg ~11/28, flag 12/05; backup DayBoard-backup-2026-11-16-watch).
