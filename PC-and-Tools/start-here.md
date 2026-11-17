@@ -4,7 +4,11 @@ _Rewritten 2026-11-16 by HQ, after installing Day Board layout B._
 
 ## Current
 
-- **Day Board layout B ("Week Band and Chat Dock") is installed and switches on at the next restart.** The running board was not restarted and still shows the old layout.
+- **Day Board layout B is LIVE (restarted 2026-11-16 21:08).** One copy is running.
+  - Layout, Discord tab, banners and resize passed.
+  - F12 and backtick are hooked; Matt still needs to try each one live.
+  - Results: `log/2026-11-16-dayboard-restart.md`.
+- **How it was installed** (before the restart):
   - **Board page:** artifact `https://claude.ai/artifact/1eYpnzMrkWkP5L8LXkfyQr` was republished as version 29 from `work/dayboard-layoutB/staged/board/day-board.html`.
     - It's one page with two modes. It stays in the usual layout until the app sends `layout: "B"`, which the old running app never does.
     - Capabilities are unchanged.
@@ -24,8 +28,8 @@ _Rewritten 2026-11-16 by HQ, after installing Day Board layout B._
 
 ## Waiting on Matt
 
-- **Restart Day Board when it suits him.** Before restarting, close the extra copy: **two Day Board instances are running** (one started 11/16 13:25, one at 15:10). Two copies would fight over F12 and backtick.
-- **Then run the after-restart checklist** in STAGING.md: F12, backtick, toasts, Discord tab, resize.
+- **Try F12 and backtick live:** F12 into the docked chat, and backtick in a Discord call.
+- **Clear the TEST banners:** three of them show the next time DISCORD is open; click "Clear all".
 - **One Night Press** has no entry in business-status.json, so its tile shows Not launched with "Nothing tracked yet". Real business-side items have to be added to the file.
 - **Optional:** OK to delete the worker's throwaway Edge profile `%TEMP%\dayboard-layoutB-edge`.
 
