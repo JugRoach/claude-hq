@@ -9,3 +9,10 @@ HQ/worker-test/
 
 # Local-only inventories (list C:\SIG folder names; never push)
 HQ/inventory-*.md
+
+# Protected: Taste Dossier and finances stay local (only their CLAUDE.md is tracked)
+Taste-Dossier/*
+!Taste-Dossier/CLAUDE.md
+Money-and-Home/*
+!Money-and-Home/CLAUDE.md
+rules/taste-card.md

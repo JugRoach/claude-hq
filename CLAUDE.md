@@ -32,6 +32,7 @@ Every purchase gets two checks before it goes to Matt:
 
 - Notes and boards cover the business side only, never the content itself.
 - Protected tastes are never named anywhere outside the Taste Dossier.
+- Taste Dossier and Money & Home content is protected: it stays on this PC and is never committed or pushed.
 
 ## Memory lives in files, not chats
 
