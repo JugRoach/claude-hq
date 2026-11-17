@@ -1,22 +1,32 @@
 # HQ: start here
 
-_Rewritten 2026-11-16 by HQ, after rollout step 7._
+_Rewritten 2026-11-16 ~22:50 by HQ, after the restructure (steps 1–6)._
 
 ## Current
 
-- **The rollout is done through step 7.**
-- **Company folder:** `C:\Claude's Workspace` (git, pushed to the private repo `JugRoach/claude-hq`). It holds the rules, routing and 8 department folders.
-- **First department pilot (PC & Tools):** Day Board layout B is live, since the 21:08 restart. See `PC-and-Tools/start-here.md`.
-- **HQ auto-starts at logon** via the Startup shortcut `Claude HQ.lnk`. Details are in `facts.md` and `log/2026-11-16-autostart.md`.
+- **The company folder is `C:\Claude's Workspace`** (git: private `JugRoach/claude-hq`).
+  - 7 departments match the Duet channels: Finances, Taste Dossier, Businesses, Career & Transition, Daily Life, Games & Hobbies, PC & Tools.
+  - Plus HQ and One-Night-Press (private).
+  - The channel table is in the root `CLAUDE.md`.
+- **This PC is the home for all files.** The Google Drive "Claude Duet" folder is retired: READ ME at the top, and old notes go to its Archive folder.
+- **HQ runs hidden at logon** (`Claude HQ.lnk` → `HQ\tools\start-hq-hidden.vbs`). Permissions are in the user `settings.json` (2026-11-16): auto mode, with prompts only for money, sends and posts, deletes, and Finances or Taste Dossier work outside their folders.
+- **HQ tools:**
+  - `tools/restart-dayboard.ps1`: safe Day Board restart or `-Status`.
+  - `tools/check-summary.ps1`: the quality gate for cloud summaries.
+  - `tools/hq-window.ps1`: show or hide HQ windows.
 
 ## Waiting on Matt
 
-- **After the next PC restart,** confirm "HQ Opus" appears in Claude Duet and takes a test job.
-- **Day Board:** try F12 and backtick live, and click "Clear all" on the three TEST banners (they show on the DISCORD tab).
-- **One Night Press:** business-side items for its Day Board tile, if wanted. The field shape is in `PC-and-Tools/work/dayboard-layoutB/STAGING.md`.
-- **The RouteDump → Drive scheduled run** in Coppice has been stuck on a permission prompt since 18:43. It's untouched.
+- Nothing blocking. Department items are in each department's `start-here.md`.
 
 ## Next
 
-- **Step 8** of the rollout, when Matt routes it.
-- **Optional:** a read-only allowlist so scheduled runs like `routedump-upload` don't stall on read-only commands. That's a settings change and needs Matt's yes.
+- **HQ's computer-use pass, scheduled Tue 11/17 11:07** (this session's one-time job; if HQ restarted, do it from here). Follow `work/desktop-projects-pass.md`, starting with its deconfliction checks:
+  1. Rename or create the 7 channel projects.
+  2. Archive BG3 Builds, Spotify Stuff and Claude-efficiency.
+  3. Pause the BG3 daily Drive check routine.
+  4. Export the Taste Dossier master and the Budget to the PC.
+  5. Turn off the routedump-upload schedule.
+  6. Move the old Drive notes into Archive.
+- **After the next PC restart,** confirm "HQ Opus" shows in Claude Duet and takes a test job.
+- **Route jobs from Duet to departments** with `rules/routing.md`.

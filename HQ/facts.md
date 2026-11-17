@@ -25,7 +25,29 @@ Each fact is dated; the newest wins.
   - `hq-window.ps1 -ShowAllHidden` brings it back.
   - Windows Terminal is on default settings, so new Terminal windows open as new windows, not inside the hidden one.
 - **Other Startup items on this PC:** `Day Board.lnk` (`.venv\Scripts\pythonw.exe app.py`) and `Endless War icon watcher.lnk`.
-- **Permissions:** no permission rules are set (`settings.json` has none). Sessions here have run in auto mode.
+- **Permissions** (set 2026-11-16 at Matt's request, in user `C:\Users\mattt\.claude\settings.json`; one approval):
+  - **Default:** auto mode.
+  - **Allowed without a prompt:**
+    - edits in `C:\Claude's Workspace\**`, `Documents\DayBoard\**` and DayBoard backups
+    - git, node and npm commands
+    - `claude agents`, `logs`, `stop`, `rm` and `--bg`
+    - any script in `HQ\tools\`
+    - routines (RemoteTrigger), Artifact, SendMessage and ListAgents
+    - Drive search, read, download and create
+  - **Always asks:**
+    - Gmail send, reply, forward and trash
+    - Calendar create, update, delete and respond
+    - Drive share, trash and update
+    - Google Docs update
+    - Remove-Item, rm and del
+    - `git push --force`
+  - **Limits:**
+    - Shell rules match only how a command starts. Multi-line scripts rely on auto mode, which is why routine jobs live as scripts in `HQ\tools\`.
+    - Desktop projects need computer use, which has its own per-app access.
+- **Google Drive "Claude Duet" folder: retired 2026-11-16.**
+  - A READ ME is at the top, and the Archive folder id is `1aQ0FMpMBayKcR4J8mgD6f-sAp3HFnVov`.
+  - The Day Board's business mirror is off (`BUSINESS_DRIVE_FILE_ID: ""`; backup in `DayBoard-backup-2026-11-16-nodrive`).
+  - `routedump-upload` is marked RETIRED. Its schedule gets turned off in the computer-use pass.
 - **Workers:** launched per `rules/routing.md` (`claude --bg`, worktree at the default location, `claude agents --json`).
 - **GitHub:** private repo `JugRoach/claude-hq`.
   - Commits use the author "Claude Duet HQ", passed per commit; no git config is set.

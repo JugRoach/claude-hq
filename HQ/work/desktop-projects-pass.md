@@ -40,7 +40,13 @@ Do every check. If any one fails, don't start: wait an hour and check again (one
    - Regenerate `Taste-Dossier/summary.md` from the master, and write a Budget summary with its own keep-out list.
    - Both summaries must pass `HQ/tools/check-summary.ps1`.
    - Then leave only the summaries in those projects' knowledge, after Matt's OK on the swap.
-7. **Ask Matt in one batched Duet message** about any project not covered above (for example Daily Ops, Side Quest, Personal Taste Profile): which channel it becomes, or whether to archive it. Don't guess.
+7. **Finish retiring the old syncs** (restructure step 5):
+   - In the desktop app's scheduled tasks, turn off **routedump-upload**. Its SKILL.md is already marked RETIRED, so any run that fires just says so and stops.
+   - In Google Drive (web), open the "Claude Duet" folder.
+     - Select every old file, keeping these three: `READ ME FIRST - this folder is retired (11-16-2026)`, `Taste Dossier — summary 11-16-2026 (full copy on PC)` and the `Archive (retired notes, 11-16-2026)` folder.
+     - Move the selection into that Archive folder in one drag. Nothing is deleted.
+     - It's 100+ files, which is why it isn't done one tool call at a time: each call would be a permission prompt.
+8. **Ask Matt in one batched Duet message** about any project not covered above (for example Daily Ops, Side Quest, Personal Taste Profile): which channel it becomes, or whether to archive it. Don't guess.
 
 ## When done
 
