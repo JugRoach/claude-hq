@@ -1,46 +1,37 @@
 ﻿# PC & Tools: start here
 
-_Rewritten 2026-11-16 by HQ, after installing Day Board layout B._
+_Rewritten 2026-11-16 21:35 by HQ, after the business card went live._
 
 ## Current
 
-- **Day Board layout B is LIVE (restarted 2026-11-16 21:08).** One copy is running.
-  - Layout, Discord tab, banners and resize passed.
-  - F12 and backtick are hooked; Matt still needs to try each one live.
-  - Results: `log/2026-11-16-dayboard-restart.md`.
-- **How it was installed** (before the restart):
-  - **Board page:** artifact `https://claude.ai/artifact/1eYpnzMrkWkP5L8LXkfyQr` was republished as version 29 from `work/dayboard-layoutB/staged/board/day-board.html`.
-    - It's one page with two modes. It stays in the usual layout until the app sends `layout: "B"`, which the old running app never does.
-    - Capabilities are unchanged.
-  - **Day Board folder:**
-    - `board\day-board.html` and `app.py` are replaced with the staged copies (hashes checked; app.py compiles).
-    - `config.json` gained `CHAT_DOCK {"on": true, "width": 560}` and `CHAT_DOCK_HELP`. Nothing else in it changed.
-  - **Backup taken before anything changed:** `C:\Users\mattt\Documents\DayBoard-backup-2026-11-16-layoutB`.
-  - **Details:**
-    - `work/dayboard-layoutB/STAGING.md`: behavior changes, rollback, the business-status.json field shape, the after-restart checklist
-    - `log/2026-11-16-dayboard-layoutB.md`: the worker's close-out
-    - `log/2026-11-16-dayboard-layoutB-routing.md`: score and tier
-- **Off switch:** set `CHAT_DOCK.on` to `false` in config.json, then restart.
-- **Full rollback:**
-  - Copy `app.py`, `board\day-board.html` and `config.json` back from the backup.
-  - Republish the artifact from the backup page.
-  - Restart.
-
-- **Business card: LIVE since the 21:30 restart.** One big card cycling every 20 s, holding on mouse-over, with dots. Rollback: `BIZ_CARD.on: false`, then restart.
-  - Republished as artifact version 30, and installed in the DayBoard folder with config `BIZ_CARD`.
-  - It shows after the next restart. Rollback: `BIZ_CARD.on: false`.
-  - Details: `work/dayboard-bizcard/STAGING.md` and `log/2026-11-16-dayboard-bizcard.md`.
-  - Backup: `DayBoard-backup-2026-11-16-bizcard`.
+- **The Day Board runs layout B with the business card.** It was last restarted at 21:30, and one copy is running.
+  - **Layout B** (live since 21:08):
+    - DAY BOARD | DISCORD tabs, with the Claude Duet chat docked on the right.
+    - Week band, to-do strip, businesses.
+    - Off switch: `CHAT_DOCK.on: false`, then restart.
+  - **Business card** (live since 21:30):
+    - One big card cycling Coppice → Game Art Kit → One Night Press every 20 s.
+    - It holds while the mouse is over it, and the dots are clickable.
+    - Off switch: `BIZ_CARD.on: false`, then restart (brings back the tiles).
+  - **Checked live:**
+    - The layout, Discord tab, banners and resize (21:08).
+    - The card cycling and F12 into the docked chat, used by Matt at 21:31 (21:30).
+- **Board page:** artifact `https://claude.ai/artifact/1eYpnzMrkWkP5L8LXkfyQr`, version 30. Its source is `board\day-board.html`, the same as `work/dayboard-bizcard/staged/board/day-board.html`.
+- **Backups:**
+  - `C:\Users\mattt\Documents\DayBoard-backup-2026-11-16-layoutB`, from before layout B.
+  - `C:\Users\mattt\Documents\DayBoard-backup-2026-11-16-bizcard`, from before the card.
+  - Full rollback: copy `app.py`, `board\day-board.html` and `config.json` back from one, republish the artifact from its page, then restart.
+- **Details:**
+  - `work/dayboard-layoutB/STAGING.md` and `work/dayboard-bizcard/STAGING.md`: behavior, rollback, the business-status.json field shape.
+  - `log/`: the close-outs for each step.
 
 ## Waiting on Matt
 
-
-- **Try F12 and backtick live:** F12 into the docked chat, and backtick in a Discord call.
-- **Clear the TEST banners:** three of them show the next time DISCORD is open; click "Clear all".
-- **One Night Press** has no entry in business-status.json, so its tile shows Not launched with "Nothing tracked yet". Real business-side items have to be added to the file.
-- **Optional:** OK to delete the worker's throwaway Edge profile `%TEMP%\dayboard-layoutB-edge`.
+- **Backtick in a Discord call:** it's hooked, but not yet tried live.
+- **One Night Press** has no entry in business-status.json, so its slide shows Not launched with "Nothing tracked yet". Real business-side items have to be added to the file.
 
 ## Next
 
-- **After the restart,** if anything is off: use the off switch, then send the log lines (`chat dock â€¦`, `tab shown â€¦`) to PC & Tools.
-- **Later:** add the optional business fields (shape in STAGING.md) to business-status.json and its `help` text.
+- **If anything is off,** use the matching off switch, then send the log lines (`chat dock …`, `tab shown …`) to PC & Tools.
+- **Later:** add the optional business fields (shape in `work/dayboard-layoutB/STAGING.md`) to business-status.json and its `help` text.
+- **Watch for duplicate copies.** Starting Day Board from a shortcut while it's already running makes a second copy that fights over F12 and backtick. This happened at 21:18. A single-instance guard in `app.py` would prevent it. Not done; it needs Matt's OK.
