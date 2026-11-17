@@ -1,0 +1,7 @@
+{
+  "CHAT_DOCK": {
+    "on": true,
+    "width": 560
+  },
+  "CHAT_DOCK_HELP": "Layout B (11/16). on: true docks the Claude Duet chat on the right of the DAY BOARD tab, beside the board (needs EMBED_TABS true); the tab bar then shows DAY BOARD | DISCORD, DISCORD still fills the whole window, and the board page switches to layout B. width: the chat's width in logical pixels (at 100% Windows scaling, screen pixels); never more than half the area, so the board keeps the larger share in a narrow window. on: false (or this key missing) = the three tabs exactly as before and the board page in its usual layout. Switching on/off takes a restart (restart.go); a new width takes effect with reload.go."
+}

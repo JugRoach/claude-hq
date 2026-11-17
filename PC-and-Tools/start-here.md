@@ -1,31 +1,35 @@
 # PC & Tools: start here
 
-_Rewritten 2026-11-16 by the PC & Tools worker, after the Day Board layouts job._
+_Rewritten 2026-11-16 by HQ, after installing Day Board layout B._
 
 ## Current
 
-- **Day Board redesign: two layout mockups are done.** Fake sample data only. The running board is untouched.
-  - **Layout A, "Three Columns":** calendar left, Claude Duet chat in the middle, businesses stacked on the right. `work/dayboard-layouts/layout-a.png`
-  - **Layout B, "Week Band and Chat Dock":** calendar band across the top, businesses in a grid below, chat docked full height on the right. `work/dayboard-layouts/layout-b.png`
-  - The HTML sources sit beside the PNGs. Close-out, colors and open questions: `log/2026-11-16-dayboard-layouts.md`.
-  - The brief was `work/dayboard-layouts/brief.md`; Matt's words are in `facts.md`; routing is in `log/2026-11-16-dayboard-layouts-routing.md`.
-- **HQ copied the files out** (hashes checked) and removed the worktree.
-- **Both PNGs are in Matt's Drive folder:**
-  - "Day Board layout A": https://drive.google.com/file/d/1WEqPrvycqNZOzutGiWhKbEEgiMtBtE5h/view
-  - "Day Board layout B": https://drive.google.com/file/d/1y5AjY39dVKUSShkWyo9FnSn2MrMT-WNE/view
+- **Day Board layout B ("Week Band and Chat Dock") is installed and switches on at the next restart.** The running board was not restarted and still shows the old layout.
+  - **Board page:** artifact `https://claude.ai/artifact/1eYpnzMrkWkP5L8LXkfyQr` was republished as version 29 from `work/dayboard-layoutB/staged/board/day-board.html`.
+    - It's one page with two modes. It stays in the usual layout until the app sends `layout: "B"`, which the old running app never does.
+    - Capabilities are unchanged.
+  - **Day Board folder:**
+    - `board\day-board.html` and `app.py` are replaced with the staged copies (hashes checked; app.py compiles).
+    - `config.json` gained `CHAT_DOCK {"on": true, "width": 560}` and `CHAT_DOCK_HELP`. Nothing else in it changed.
+  - **Backup taken before anything changed:** `C:\Users\mattt\Documents\DayBoard-backup-2026-11-16-layoutB`.
+  - **Details:**
+    - `work/dayboard-layoutB/STAGING.md`: behavior changes, rollback, the business-status.json field shape, the after-restart checklist
+    - `log/2026-11-16-dayboard-layoutB.md`: the worker's close-out
+    - `log/2026-11-16-dayboard-layoutB-routing.md`: score and tier
+- **Off switch:** set `CHAT_DOCK.on` to `false` in config.json, then restart.
+- **Full rollback:**
+  - Copy `app.py`, `board\day-board.html` and `config.json` back from the backup.
+  - Republish the artifact from the backup page.
+  - Restart.
 
 ## Waiting on Matt
 
-- Choose layout A or B, or ask for changes.
-- No live change goes into the board until he says yes.
-- Small questions for when he picks (details in the close-out):
-  - "Waiting on Matt" or the tracker's current "Needs you"?
-  - Should "Open with Claude", the Focus view or the note box come back?
+- **Restart Day Board when it suits him.** Before restarting, close the extra copy: **two Day Board instances are running** (one started 11/16 13:25, one at 15:10). Two copies would fight over F12 and backtick.
+- **Then run the after-restart checklist** in STAGING.md: F12, backtick, toasts, Discord tab, resize.
+- **One Night Press** has no entry in business-status.json, so its tile shows Not launched with "Nothing tracked yet". Real business-side items have to be added to the file.
+- **Optional:** OK to delete the worker's throwaway Edge profile `%TEMP%\dayboard-layoutB-edge`.
 
 ## Next
 
-- Once Matt picks, plan the live change:
-  - Back up to `DayBoard-backup-YYYY-MM-DD-<name>` first.
-  - Then edit `board\day-board.html` and the theme.
-- Check whether four running `app.py` copies is intended (see `facts.md`).
-- Leftover: the throwaway Edge profile at `%TEMP%\dayboard-mockup-edge` can be deleted once Matt says yes.
+- **After the restart,** if anything is off: use the off switch, then send the log lines (`chat dock …`, `tab shown …`) to PC & Tools.
+- **Later:** add the optional business fields (shape in STAGING.md) to business-status.json and its `help` text.

@@ -32,7 +32,16 @@ Each fact is dated; the newest wins. Facts come from a read-only look at the fil
   - Matt's convention for backups beside the folder is `C:\Users\mattt\Documents\DayBoard-backup-YYYY-MM-DD-<name>`. There are 21 of these; `-11-16-sticky` is about 3 GB.
   - Older backups inside the folder use `backup-YYYY-MM-DD-<name>` (17 of them).
   - Single-file backups use `<file>.bak-YYYY-MM-DD-<name>` or `<file>.before-YYYY-MM-DD-<name>.html`.
-- **Running copies:** on 2026-11-16 at about 19:10 there were **four** `pythonw app.py` processes: two from `.venv` and two from the system Python 3.12. This may mean duplicate instances. It's unconfirmed and nothing has been changed.
+- **Running copies (updated 2026-11-16 21:10):** the four `pythonw app.py` processes are **two Day Board instances**.
+  - Each instance is a `.venv` launcher plus the system Python 3.12 process it starts.
+  - One instance started 11/16 13:25 and the other at 15:10.
+  - Only one should run.
+- **The board page is a claude.ai artifact** (`BOARD_URL` = `https://claude.ai/artifact/1eYpnzMrkWkP5L8LXkfyQr`). `board\day-board.html` is its source.
+  - The app reads `BOARD_URL` and creates its windows only at start.
+  - The page keeps to-dos, tasks, workouts and theme in that artifact's own database, so the URL must stay the same.
+- **Layout B (installed 2026-11-16, on from the next restart):** config `CHAT_DOCK` docks the Claude Duet chat on the right of the DAY BOARD tab. The tabs become DAY BOARD | DISCORD.
+  - The page switches to layout B only when the app sends `layout: "B"`.
+  - Off switch: `CHAT_DOCK.on: false`, then restart.
 - **Files to leave alone:**
   - `config.json`: it holds the hotkeys and the Discord and Drive settings.
   - `webdata\` (about 800 MB): the WebView profile, including sign-ins.

@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Day Board harness (TEST ONLY)</title>
+<!--
+  TEST ONLY. Never published, never loaded by Day Board.
+  Loads the staged board page (or, with src=live, the current one, read-only) into a frame that stands in for the
+  claude.ai artifact frame, with a fake runtime: fake mcp (Google Calendar events all titled "TEST ...", Google Drive
+  returning business-status.json), fake db (to-dos and tasks titled "TEST ..."), no dictation. It answers the page's
+  dayboard-hello the way app.py does: the config message (with layout "B" only in mode=B), then the business file.
+  The surroundings imitate the Day Board window: the native tab bar, the board area scaled the way BOARD_FIT does
+  (base 1280x820, min 0.8, max 1.6), and in mode=B an empty stand-in for the docked Claude Duet WebView (560 px).
+
+  Query: mode=B | default | off | flip   (default = what the OLD app.py sends: no layout key; off = new app, CHAT_DOCK
+                                  off; flip = layout B first, then layout "" 1.5 s later, to check B moves everything back)
+         src=staged | live        fields=1 adds TEST-only optional business fields and an approval, to check rendering
+         at=HH:MM                 the page's own preview clock (default 10:42), so screenshots are repeatable
+         w=1920&h=1080            the Day Board window's client size to imitate (fixed, so the render doesn't depend
+                                  on when headless Edge settles its viewport)
+  Needs Edge started with --allow-file-access-from-files (the page file is read with XHR).
+-->
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;overflow:hidden;background:#131314}
+#win{position:relative;overflow:hidden}
+.bar{position:absolute;left:0;top:0;right:0;height:35px;background:#131314;border-bottom:1px solid #2A2A2D;
+  font:600 14px/1 "Bahnschrift SemiBold SemiCondensed","Bahnschrift","Segoe UI",sans-serif;color:#A39E94}
+.tab{position:absolute;top:0;width:150px;height:31px;display:flex;align-items:center;justify-content:center;white-space:pre}
+.tab.on{background:#1A1A1C;color:#E8E2D6}
+.tab i{position:absolute;left:0;right:0;top:31px;height:3px}
+.note{position:absolute;right:14px;top:10px;font:400 12px/1 "Segoe UI",sans-serif;color:#8A847A;letter-spacing:0;white-space:nowrap}
+.note b{color:#e0796e;font-weight:600}
+.area{position:absolute;left:0;right:0;top:35px;bottom:0}
+#boardBox{position:absolute;left:0;top:0;bottom:0;overflow:hidden}
+#f{border:0;display:block;transform-origin:0 0;background:#131314}
+.edge{position:absolute;top:0;bottom:0;width:1px;background:#2A2A2D}
+.chat{position:absolute;top:0;bottom:0;right:0;background:#1F1E1D;display:flex;align-items:center;justify-content:center;
+  padding:40px;text-align:center;font:15px/1.6 "Segoe UI",sans-serif;color:#8A847A}
+</style>
+</head>
+<body>
+<div id="win">
+<div class="bar" id="bar"><div class="note" id="note">TEST harness</div></div>
+<div class="area" id="area"><div id="boardBox"><iframe id="f" title="Day Board page under test"></iframe></div></div>
+</div>
+<script>
+(function(){
+const TZ='America/New_York';
+const q=new URLSearchParams(location.search);
+const MODE=['B','off','flip'].includes(q.get('mode'))?q.get('mode'):'default';   /* flip: B first, then back to default after 1.5 s */
+const LIVE=q.get('src')==='live';
+const FIELDS=q.get('fields')==='1';
+const AT=/^\d{1,2}:\d{2}$/.test(q.get('at')||'')?q.get('at'):'10:42';
+const SRC=LIVE?'file:///C:/Users/mattt/Documents/DayBoard/board/day-board.html':'../staged/board/day-board.html';
+const DOCK=MODE==='B'?560:0;
+const errors=[],calls=[];let posted=0;
+
+/* ---- dates in Matt's zone ---- */
+const fKey=new Intl.DateTimeFormat('en-CA',{timeZone:TZ,year:'numeric',month:'2-digit',day:'2-digit'});
+const K=fKey.format(new Date());
+function add(k,n){const [y,m,d]=k.split('-').map(Number);return new Date(Date.UTC(y,m-1,d+n)).toISOString().slice(0,10)}
+const OFF='-05:00';   /* EST: daylight saving time ended 2026-11-01 */
+const at=(k,hm)=>k+'T'+hm+':00'+OFF;
+const ev=(id,k,s,e,t)=>({id,status:'confirmed',summary:t,start:{dateTime:at(k,s)},end:{dateTime:at(k,e)}});
+const ad=(id,k,t)=>({id,status:'confirmed',summary:t,start:{date:k},end:{date:add(k,1)}});
+const EVENTS=[
+  ev('y1',add(K,-1),'23:00','23:30','TEST Yesterday, late'),
+  ev('t1',K,'10:00','10:30','TEST Morning brief'),
+  ev('t2',K,'11:00','11:45','TEST Call with the accountant'),
+  ev('t3',K,'13:00','14:00','TEST Lunch with a friend'),
+  ev('t4',K,'15:00','15:30','TEST Grocery pickup'),
+  ev('t5',K,'19:30','21:30','TEST Game night'),
+  ad('t6',K,'TEST All-day item'),
+  ev('u1',add(K,1),'10:00','11:00','TEST Dentist'),
+  ev('u2',add(K,1),'14:00','14:30','TEST Bank appointment'),
+  ad('v1',add(K,2),'TEST Trash and recycling'),
+  ev('v2',add(K,2),'19:00','21:00','TEST Dinner out'),
+  ev('w1',add(K,3),'09:00','09:45','TEST Haircut'),
+  ev('x1',add(K,5),'12:00','13:00','TEST Outside the week (must not show)')
+];
+function eventsIn(args){
+  const a=Date.parse(args.startTime+OFF),b=Date.parse(args.endTime+OFF);
+  return EVENTS.filter(e=>{const s=e.start.dateTime?Date.parse(e.start.dateTime):Date.parse(e.start.date+'T00:00:00'+OFF);
+    const en=e.end.dateTime?Date.parse(e.end.dateTime):Date.parse(e.end.date+'T00:00:00'+OFF);return s<b&&en>a});
+}
+
+/* ---- business-status.json: today's real file (2026-11-16), copied as-is ---- */
+const REAL={
+  "updated": "2026-11-14T14:36:22-05:00",
+  "approval": {"waiting": false, "what": "", "updated": "2026-11-14T12:45:00-05:00"},
+  "businesses": [
+    {"name": "Coppice", "state": "Not launched", "line": "Waiting on top.gg review. Nothing needed from you.", "updated": "2026-11-14T14:36:22-05:00"},
+    {"name": "Game Art Kit", "state": "Not launched", "line": "Next product; queued after Coppice free launch.", "updated": "2026-11-14T14:36:22-05:00"}
+  ],
+  "help": "Day Board business tracker. One entry per business. state is one of: Running, Needs you, Earning, Not launched. Set approval.waiting to true (with a short 'what') when an Allow card or approval is waiting on Matt. Bump 'updated' (ISO time) on every change; the newer of this file and the Drive copy in Project Beacon code wins."
+};
+/* fields=1: TEST-only rows to check how the optional fields render (never shown on the real board) */
+function withFields(d){
+  d=JSON.parse(JSON.stringify(d));d.updated='2026-11-16T10:00:00-05:00';d.approval={waiting:true,what:'TEST approval text',updated:d.updated};
+  d.businesses[0].deadlines=[{what:'TEST deadline',due:add(K,4)}];
+  d.businesses[0].needs=[{what:'TEST needs-you item',due:add(K,2)}];
+  d.businesses.unshift({name:'One Night Press',state:'Needs you',line:'TEST line',updated:d.updated,
+    deadlines:[{what:'TEST deadline A',due:add(K,4)},{what:'TEST deadline B',due:'2026-11-27'}],
+    accounts:[{name:'TEST account A',status:'pending verification'},{name:'TEST account B',status:'active'},'TEST account C'],
+    launch_tasks:{done:4,total:9,next:'TEST next task'},
+    needs:[{what:'TEST item one'},'TEST item two']});
+  return d;
+}
+const BIZ=FIELDS?withFields(REAL):REAL;
+const b64=s=>btoa(unescape(encodeURIComponent(s)));
+
+/* ---- fake runtime handed to the page (it calls claude.use(name)) ---- */
+function snap(rows){return{docs:rows.map(([id,data])=>({id,data:()=>JSON.parse(JSON.stringify(data)),
+  update:()=>Promise.resolve(),set:()=>Promise.resolve()}))}}
+const COLL={
+  todos:[['a',{text:'TEST Pay the electric bill',day:K,order:1,done:true}],['b',{text:'TEST Reply to the landlord',day:K,order:2,urgent:true}],
+         ['c',{text:'TEST Back up the PC',day:K,order:3,when:'by 6 PM'}]],
+  tasks:[['t1',{title:'TEST Ready-for-you task',state:'Ready for you',area:'Test',next:'TEST next step',order:1}],
+         ['t2',{title:'TEST Waiting task',state:'Stopped',order:1}],['t3',{title:'TEST Working task',state:'Working',order:1}]],
+  inbox:[],workouts:[]
+};
+const DOCS={'meta/feed':{updated_at:new Date().toISOString()}};
+const db={
+  collection:name=>({
+    onSnapshot(cb){setTimeout(()=>cb(snap(COLL[name]||[])),0);return()=>{}},
+    doc:id=>({update(){return Promise.resolve()},set(){return Promise.resolve()}}),
+    add(){return Promise.resolve({id:'new'})}
+  }),
+  doc:path=>({onSnapshot(cb){setTimeout(()=>cb(DOCS[path]?{exists:true,data:()=>DOCS[path]}:{exists:false,data:()=>({})}),0);return()=>{}}})
+};
+const mcp={
+  callTool(server,tool,args){
+    if(server==='Google Calendar'&&tool==='list_events'){calls.push(args.startTime.slice(0,10)+' to '+args.endTime.slice(0,10));show();
+      return Promise.resolve({payload:{events:eventsIn(args)},cache:{storedAt:Date.now()}})}
+    if(server==='Google Drive'&&tool==='download_file_content')return Promise.resolve({payload:{content:b64(JSON.stringify(BIZ))}});
+    return Promise.reject({code:'not_in_manifest'});
+  }
+};
+window.__H={runtime:n=>n==='mcp'?mcp:n==='db'?db:null,err:m=>{errors.push(m);show()}};
+
+/* ---- what app.py would send (board_cfg) ---- */
+const CFG={type:'dayboard-config',
+  sleep:[{date:'2026-11-21',wake:'09:30',lights_out:'01:30'},{date:'2026-12-07',wake:'06:30',lights_out:'22:30'}],
+  theme:{page:'#131314',panel:'#1A1A1C',hairline:'#2A2A2D',text:'#E8E2D6',secondary:'#A39E94',muted:'#6B6760',accent:'#B08D57'},
+  motion:{on:true,ms:350,glint:true,calendar_refresh_seconds:15},business_drive_file:'TEST-ONLY',workout_from:'2026-11-14',
+  discord:{on:true,shown:false},tabbar:true,nudge:{on:true,lead:10}};
+if(MODE==='B'||MODE==='flip')CFG.layout='B';else if(MODE==='off')CFG.layout='';
+
+/* ---- window chrome: tab bar, board area at BOARD_FIT zoom, docked chat stand-in ---- */
+const spaced=t=>t.toUpperCase().split(' ').map(w=>w.split('').join(' ')).join('   ');
+const bar=document.getElementById('bar');
+(MODE==='B'?['Day Board','Discord']:['Day Board','Discord','Claude Duet']).forEach((t,i)=>{
+  const d=document.createElement('div');d.className='tab'+(i?'':' on');d.style.left=(12+i*154)+'px';d.textContent=spaced(t);
+  if(!i){const u=document.createElement('i');u.style.background=MODE==='B'?'#E8E2D6':'#B08D57';d.append(u)}bar.append(d)});
+const W=Math.max(800,+q.get('w')||1920),WH=Math.max(500,+q.get('h')||1080),H=WH-35,bw=W-(DOCK?DOCK+1:0);
+const win=document.getElementById('win');win.style.width=W+'px';win.style.height=WH+'px';
+const z=Math.round(Math.max(.8,Math.min(1.6,bw/1280,H/820))*100)/100;
+const box=document.getElementById('boardBox'),f=document.getElementById('f');
+box.style.width=bw+'px';f.style.width=(bw/z)+'px';f.style.height=(H/z)+'px';f.style.transform='scale('+z+')';
+if(DOCK){const area=document.getElementById('area');
+  const e=document.createElement('div');e.className='edge';e.style.right=DOCK+'px';area.append(e);
+  const c=document.createElement('div');c.className='chat';c.style.width=DOCK+'px';
+  c.textContent='Claude Duet (claude.ai/messages) docks here: its own WebView, placed by app.py. Not part of this test.';area.append(c)}
+function show(){
+  const n=document.getElementById('note');n.replaceChildren('TEST harness \u00b7 '+(LIVE?'LIVE page (read-only)':'staged page')+' \u00b7 mode '+MODE+
+    (FIELDS?' + TEST fields':'')+' \u00b7 view '+innerWidth+'\u00d7'+innerHeight+' @'+devicePixelRatio+' \u00b7 zoom '+z+' \u00b7 page '+Math.round(bw/z)+'\u00d7'+Math.round(H/z)+' \u00b7 calendar asked: '+(calls[calls.length-1]||'-')+
+    ' \u00b7 messages from page: '+posted+' \u00b7 ');
+  const b=document.createElement('b');b.textContent=errors.length?('errors: '+errors.join(' | ')).slice(0,220):'errors: 0';n.append(b);
+}
+
+/* ---- answer the page like app.py's BOARD_CFG_JS does ---- */
+function send(m){f.contentWindow.postMessage(m,'*')}
+window.addEventListener('message',e=>{
+  if(e.source!==f.contentWindow||!e.data)return;posted++;show();
+  if(e.data.type==='dayboard-hello'){
+    send(CFG);
+    send({type:'dayboard-preview',at:at(K,AT.padStart(5,'0'))});
+    send({type:'dayboard-business',data:BIZ});
+    if(MODE==='flip')setTimeout(()=>send(Object.assign({},CFG,{layout:''})),1500);
+  }
+});
+
+/* ---- load the page text and run it in the frame, with the fake runtime in place first ---- */
+let html='';
+try{const x=new XMLHttpRequest();x.open('GET',SRC,false);x.send();html=x.responseText}catch(e){errors.push('could not read the page: '+e)}
+const shim='<script>(function(){const H=window.parent.__H;'+
+  'window.onerror=function(m,s,l,c){H.err(String(m)+" @"+l+":"+c)};'+
+  'window.addEventListener("unhandledrejection",function(e){H.err("rejection: "+((e.reason&&e.reason.message)||e.reason))});'+
+  'window.claude={use:function(n){return Promise.resolve(H.runtime(n))}};})();<\/script>';
+f.srcdoc=html.replace('<head>','<head>'+shim);
+show();
+})();
+</script>
+</body>
+</html>

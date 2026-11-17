@@ -35,3 +35,24 @@ Scored by HQ with `rules/routing.md`.
 - Taken by HQ before anything else, at `C:\Users\mattt\Documents\DayBoard-backup-2026-11-16-layoutB`: 38 files, 2 MB, hashes checked.
 - It covers code, config, data and the page.
 - Left out: `whisper\` (model), `webdata\` (sign-in profile, in use), `.venv\` and the old `backup-*` folders.
+
+## How the run went (HQ)
+
+- **Worker:** `e9e46d20` (Opus xhigh) ran from 19:58 to 20:28 (30 min of work) in a default-location worktree, with no permission prompts.
+  - HQ's watcher loop was stopped by Claude Code at about 20:00 because the PC was low on memory (a game was running). The worker itself wasn't affected.
+  - HQ checked it by hand when Matt asked.
+- **HQ review:**
+  - Read the full app.py diff. Every change is gated on `dock_on()` / `chat_in_view()`, and every use of `views["today"]` is still valid once it becomes the dock panel.
+  - Checked that the page's default-mode lines are gated on `LAYOUT==='B'`.
+  - Looked at the B and B-with-fields renders: real names, accent only on Needs-you items.
+  - Checked hashes against STAGING.md.
+- **21:05, page:** republished artifact `1eYpnzMrkWkP5L8LXkfyQr` as version 29 to the same URL.
+  - Capabilities carried forward unchanged.
+  - Read-back is identical to the staged file except for the one blank line the service adds after `<body>`, which the previous version had too.
+- **21:07, Day Board folder:**
+  - Checked that the live files still matched the backup.
+  - Copied `board\day-board.html`.
+  - Merged `CHAT_DOCK` and `CHAT_DOCK_HELP` into config.json as text, keeping its formatting. The JSON is valid, and every other key is unchanged.
+  - Copied `app.py`. Hashes match, and it compiles (in-memory check, nothing written).
+- **Not done:** no restart, no trigger files. The running board's processes are unchanged.
+- **Found:** two Day Board instances are running (13:25 and 15:10). Close one before the restart.
