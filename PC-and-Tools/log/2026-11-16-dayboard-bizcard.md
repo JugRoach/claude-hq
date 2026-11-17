@@ -27,3 +27,16 @@ Matt asked for one big business card that cycles through Coppice, Game Art Kit a
   - `BIZ_CARD.on: false`, then restart: back to the tiles.
   - Full: the backup above, then republish the artifact from the backup page.
 - **Housekeeping:** HQ's throwaway headless-Edge profile `%TEMP%\dayboard-bizcard-edge`, made for these renders, was deleted afterwards.
+
+## Live (restart 2026-11-16 21:30, Matt's OK)
+
+- **Stopped all four Day Board processes,** which were both copies (21:08 and 21:18). The WebView profile was released with no force-stops.
+- **Started one fresh copy at 21:30:52** (launcher 1536 + process 42292). The log shows no errors, the chat docked, and F12, F11 and backtick hooked.
+- **The business card is live:**
+  - At about 21:31:05 the capture (PrintWindow, no focus change) showed Coppice, with three dots.
+  - At about 21:31:40 it showed One Night Press (third dot), with its four business-side sections reading "Nothing tracked yet".
+  - So it cycled by itself at 20 s per business.
+- **F12 worked live on the single copy** (Matt, 21:31:00): it recorded, sent 47 characters into the docked chat, and the reply chime played. Reply banners were skipped because the chat is docked and on screen, as designed.
+- **Focus:**
+  - Before the restart, focus was on Day Board (Matt's 21:18 copy). After the old copies closed it went to World of Warcraft, and the new copy did not take it (checked 12 s after start).
+  - About 30 s later the foreground was Day Board again. Day Board's log shows no tab switch or raise at that point, and HQ only read the window. This happened after Matt's F12 message and the replies, so it was most likely Matt's own click. Unconfirmed.
