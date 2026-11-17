@@ -7,6 +7,9 @@ One-Night-Press/
 # Throwaway worker tests
 HQ/worker-test/
 
+# Retired Google Drive notes, kept on this PC only (some mention SIG and private work)
+HQ/archive/
+
 # Worker git worktrees (HQ copies results out)
 .claude/worktrees/
 
