@@ -1,0 +1,7 @@
+{
+  "BIZ_CARD": {
+    "on": true,
+    "seconds": 20
+  },
+  "BIZ_CARD_HELP": "Layout B's businesses (11/16). on: true = ONE big card that slowly cross-fades through every business (the ones in business-status.json, then One Night Press, business side only), with dots showing which is up (click a dot to jump); it holds while the mouse is over it. seconds: time per business (5-300, default 20). on: false (or this key missing) = the separate tiles as before. Takes effect at the next restart, or with reload.go."
+}

@@ -26,7 +26,15 @@ _Rewritten 2026-11-16 by HQ, after installing Day Board layout B._
   - Republish the artifact from the backup page.
   - Restart.
 
+- **Business card (staged 2026-11-16, not live yet):** one big card cycling through the businesses every 20 s.
+  - Republished as artifact version 30, and installed in the DayBoard folder with config `BIZ_CARD`.
+  - It shows after the next restart. Rollback: `BIZ_CARD.on: false`.
+  - Details: `work/dayboard-bizcard/STAGING.md` and `log/2026-11-16-dayboard-bizcard.md`.
+  - Backup: `DayBoard-backup-2026-11-16-bizcard`.
+
 ## Waiting on Matt
+
+- **His OK to restart Day Board for the business card.** Two copies are running (21:08 and 21:18; the second started from a shortcut). Close both, then start one.
 
 - **Try F12 and backtick live:** F12 into the docked chat, and backtick in a Discord call.
 - **Clear the TEST banners:** three of them show the next time DISCORD is open; click "Clear all".
