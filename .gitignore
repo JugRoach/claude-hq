@@ -7,6 +7,9 @@ One-Night-Press/
 # Throwaway worker tests
 HQ/worker-test/
 
+# Worker git worktrees (HQ copies results out)
+.claude/worktrees/
+
 # Local-only inventories (list C:\SIG folder names; never push)
 HQ/inventory-*.md
 
